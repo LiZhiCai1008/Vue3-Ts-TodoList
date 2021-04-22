@@ -45,6 +45,9 @@ export default defineComponent({
     }
     // 删除Task
     const deleteItem = (idx: number): void => {
+      if (!window.confirm('确认删除吗？')) {
+        return 
+      }
       props.deleteTodo && props.deleteTodo(idx)
     }
     // 计算属性

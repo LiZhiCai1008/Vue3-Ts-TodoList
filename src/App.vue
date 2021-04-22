@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, reactive } from 'vue';
+import { defineComponent, toRefs, reactive, watch } from 'vue';
 import Header from '@/components/Header.vue';
 import List from '@/components/List.vue';
 import Footer from '@/components/Footer.vue';
@@ -21,8 +21,13 @@ export default defineComponent({
     Footer
   },
   setup() {
+    const localTodos = JSON.parse(localStorage.getItem('todos') || '[]')
     const state = reactive<{ todos: Todo[] }>({
-      todos: []
+      todos: localTodos.length ? localTodos : [
+        { id: 1, title: '巴拉巴拉小魔仙摩卡拉，变身', checked: false },
+        { id: 1, title: '特斯拉牛逼！！！默认选中', checked: true },
+        { id: 2, title: '默认任务', checked: false }
+      ]
     })
     // 添加任务
     const addTodo = (todo: Todo): void => {
@@ -46,6 +51,9 @@ export default defineComponent({
     const deleteAll = (): void => {
       state.todos = []
     }
+    watch(state, (nval, oval) => {
+      localStorage.setItem('todos', JSON.stringify(nval.todos))
+    })
     return {
       ...toRefs(state),
       addTodo,

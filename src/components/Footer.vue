@@ -45,6 +45,9 @@ export default defineComponent({
       }
     })
     const deleteAllTodos = (): void => {
+      if (!window.confirm('确认清空吗？')) {
+        return 
+      }
       props.deleteAll && props.deleteAll()
     }
     return {
